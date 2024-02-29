@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:moviles_app/presentation/providers/last_movements_provider.dart';
+import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
+import 'package:moviles_app/presentation/screens/my_money_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/last_movements_box.dart';
+import 'package:provider/provider.dart';
 
 class LobbyUserScreen extends StatelessWidget {
   const LobbyUserScreen({super.key});
@@ -6,32 +11,40 @@ class LobbyUserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("¡Hola, $user!"),
-        backgroundColor: const Color(0xFF202020),
-        leading: IconButton(
-          icon: const Icon(Icons.menu), // Cambia este icono por el que desees
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person),
-          ),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => LastMovementsProvider())
         ],
-      ),
-      body: _LobbyUserView(),
-    );
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("¡Hola, $user!"),
+            backgroundColor: const Color(0xFF202020),
+            leading: IconButton(
+              icon:
+                  const Icon(Icons.menu), // Cambia este icono por el que desees
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.person),
+              ),
+            ],
+          ),
+          body: _LobbyUserView(),
+        ));
   }
 }
 
 class _LobbyUserView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
+    final lastMovementProvider = context.watch<LastMovementsProvider>();
+
+    return SingleChildScrollView(
+        child: Column(
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         Row(
@@ -41,7 +54,7 @@ class _LobbyUserView extends StatelessWidget {
               children: [
                 Container(
                     width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.275,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -49,8 +62,8 @@ class _LobbyUserView extends StatelessWidget {
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.8),
-                            offset: const Offset(0, 5),
-                            blurRadius: 3,
+                            offset: const Offset(0, 9),
+                            blurRadius: 5,
                           ),
                         ])),
                 Positioned(
@@ -71,7 +84,7 @@ class _LobbyUserView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.095,
+                  top: MediaQuery.of(context).size.height * 0.08,
                   left: MediaQuery.of(context).size.width * 0.07,
                   child: Text(
                     "\$5000",
@@ -90,7 +103,7 @@ class _LobbyUserView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.22,
+                  top: MediaQuery.of(context).size.height * 0.2,
                   left: MediaQuery.of(context).size.width * 0.07,
                   child: Text(
                     "Mauricio Castillo",
@@ -107,20 +120,29 @@ class _LobbyUserView extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * 0.22,
+                  top: MediaQuery.of(context).size.height * 0.185,
                   right: MediaQuery.of(context).size.width * 0.07,
-                  child: Text(
-                    "Ver dinero",
-                    style: TextStyle(
-                        color: const Color(0xFF171717),
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
-                        fontWeight: FontWeight.w900,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyMoneyScreen()));
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                    ),
+                    child: Text(
+                      "Ver dinero",
+                      style: TextStyle(
                         shadows: [
                           Shadow(
                               color: Colors.grey.withOpacity(0.5),
                               offset: const Offset(0, 3),
                               blurRadius: 3)
-                        ]),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Positioned(
@@ -142,12 +164,125 @@ class _LobbyUserView extends StatelessWidget {
                 ),
               ],
             )
-// Utilizando el constructor de Color.fromRGBO con valores de rojo, verde, azul y opacidad
+          ],
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width *
+                      0.055), // Agrega el relleno deseado aquí
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LastMovementsScreen()));
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF202020),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  shadowColor: Colors.transparent,
+                ),
+                child: Text(
+                  "Últimos movimientos",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(0, 3),
+                          blurRadius: 5,
+                        ),
+                      ]),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        Column(
+          children: [
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
           ],
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        const Text("Últimos movimientos"),
+        // Eliminar el expanded para tratar de corregir
+        // Otros widgets aquí
+        // Container(
+        //   height: MediaQuery.of(context).size.height * 0.3,
+        //   child: Expanded(
+        //     child: ListView.builder(
+        //       itemCount: lastMovementProvider.lastMovements.length,
+        //       itemBuilder: (context, item) {
+        //         // final message = lastMovementProvider.lastMovements[item];
+        //         return const LastMovementsBox();
+        //       },
+        //     ),
+        //   ),
+        // ),
+        // Otros widgets aquí
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: MediaQuery.of(context).size.width *
+                      0.055), // Agrega el relleno deseado aquí
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF202020),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  shadowColor: Colors.transparent,
+                ),
+                child: Text(
+                  "Presupuestos",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          offset: const Offset(0, 3),
+                          blurRadius: 5,
+                        ),
+                      ]),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+        Column(
+          children: [
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+            const LastMovementsBox(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
+          ],
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.05),
       ],
-    );
+    ));
   }
 }

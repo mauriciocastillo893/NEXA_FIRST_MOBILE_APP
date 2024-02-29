@@ -84,7 +84,10 @@ class _RegisterView extends StatelessWidget {
         const MessageFieldBox(placeholder: "Contraseña"),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()));
+          },
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFFFFFDFD),
             minimumSize: const Size(150, 45),

@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Flutter (SM A546E)",
+            "program": "lib/main.dart",
+            "deviceId": "192.168.1.236:1031",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
