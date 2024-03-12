@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/providers/last_movements_provider.dart';
 import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
@@ -205,34 +207,36 @@ class _LobbyUserView extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-        Column(
-          children: [
-            const LastMovementsBox(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-          ],
+        SizedBox(
+          // height: MediaQuery.of(context).size.height * 0.3,
+          height: lastMovementProvider.lastMovements.isEmpty
+              ? MediaQuery.of(context).size.height * 0.05
+              : min(
+                  MediaQuery.of(context).size.height *
+                      0.075 *
+                      min(4, lastMovementProvider.lastMovements.length),
+                  MediaQuery.of(context).size.height * 0.3),
+          child: lastMovementProvider.lastMovements.isEmpty
+              ? const Center(
+                  child: Text(
+                    "No se encontraron movimientos",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
+              : ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: min(4, lastMovementProvider.lastMovements.length),
+                  itemBuilder: (context, item) {
+                    final message = lastMovementProvider.lastMovements[item];
+                    List<Widget> elements = [
+                      LastMovementsBox(lastMovement: message),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.015),
+                    ];
+                    return Column(children: elements);
+                  },
+                ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        // Eliminar el expanded para tratar de corregir
-        // Otros widgets aquí
-        // Container(
-        //   height: MediaQuery.of(context).size.height * 0.3,
-        //   child: Expanded(
-        //     child: ListView.builder(
-        //       itemCount: lastMovementProvider.lastMovements.length,
-        //       itemBuilder: (context, item) {
-        //         // final message = lastMovementProvider.lastMovements[item];
-        //         return const LastMovementsBox();
-        //       },
-        //     ),
-        //   ),
-        // ),
         // Otros widgets aquí
 
         Row(
@@ -271,13 +275,13 @@ class _LobbyUserView extends StatelessWidget {
         SizedBox(height: MediaQuery.of(context).size.height * 0.01),
         Column(
           children: [
-            const LastMovementsBox(),
+            // const LastMovementsBox(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
+            // const LastMovementsBox(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
+            // const LastMovementsBox(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
-            const LastMovementsBox(),
+            // const LastMovementsBox(),
             SizedBox(height: MediaQuery.of(context).size.height * 0.015),
           ],
         ),

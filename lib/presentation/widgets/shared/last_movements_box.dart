@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:moviles_app/domain/entities/last_movement.dart';
 
+// DARK MODE NEEDS TO BE HEREz
 class LastMovementsBox extends StatelessWidget {
-  const LastMovementsBox({super.key});
+  const LastMovementsBox({
+    super.key,
+    required this.lastMovement,
+  });
+  final LastMovement lastMovement;
 
   @override
   Widget build(BuildContext context) {
@@ -24,25 +30,26 @@ class LastMovementsBox extends StatelessWidget {
           children: [
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "12/12/2021",
+                      lastMovement.fromWho,
                       style: TextStyle(
-                        color: const Color(0xFF8AFF10),
+                        color: Colors.white,
                         fontWeight: FontWeight.w900,
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
+                        fontSize: MediaQuery.of(context).size.width * 0.037,
                       ),
                     ),
                     Text(
-                      "12:01",
+                      lastMovement.transactionMade,
                       style: TextStyle(
-                        color: const Color(0xFF8AFF10),
+                        color: Colors.white,
                         fontWeight: FontWeight.w900,
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
+                        fontSize: MediaQuery.of(context).size.width * 0.037,
                       ),
                     ),
                   ],
@@ -51,25 +58,31 @@ class LastMovementsBox extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40),
+                padding: EdgeInsets.only(
+                    right: MediaQuery.of(context).size.width * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "12/12/2021",
+                      lastMovement.bank,
                       style: TextStyle(
-                        color: const Color(0xFF8AFF10),
+                        color: Colors.white,
                         fontWeight: FontWeight.w900,
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
+                        fontSize: MediaQuery.of(context).size.width * 0.037,
                       ),
                     ),
                     Text(
-                      "12:00",
+                      lastMovement.operationType == OperationType.deposit
+                          ? '+ \$${lastMovement.amount.toString()}'
+                          : '- \$${lastMovement.amount.toString()}',
                       style: TextStyle(
-                        color: const Color(0xFF8AFF10),
+                        color:
+                            lastMovement.operationType == OperationType.deposit
+                                ? const Color.fromARGB(255, 182, 255, 104)
+                                : const Color.fromARGB(255, 255, 107, 107),
                         fontWeight: FontWeight.w900,
-                        fontSize: MediaQuery.of(context).size.width * 0.04,
+                        fontSize: MediaQuery.of(context).size.width * 0.037,
                       ),
                     ),
                   ],

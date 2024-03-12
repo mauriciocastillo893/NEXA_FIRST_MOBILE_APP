@@ -9,7 +9,7 @@ class LastMovementsProvider extends ChangeNotifier {
         bank: 'BBVA',
         operationType: OperationType.transfer,
         transactionMade: 'Ayer a las 10:28'),
-            LastMovement(
+    LastMovement(
         fromWho: 'Oxxo',
         amount: 10,
         bank: 'BBVA',
