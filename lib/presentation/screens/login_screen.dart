@@ -83,7 +83,7 @@ class _LoginView extends StatelessWidget {
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.0175),
         MessageFieldBox(
-          title: "Usuario",
+          title: "Nombre de Usuario",
           placeholder: "",
           typeOfIcon: const Icon(Icons.person),
           borderRadiusOf: 12,
@@ -109,20 +109,6 @@ class _LoginView extends StatelessWidget {
           text: "Iniciar Sesión",
           borderRadiusOf: 12,
         ),
-        // ElevatedButton(
-        //   onPressed: () {
-        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //       return const LobbyUserScreen();
-        //     }));
-        //   },
-        //   style: ElevatedButton.styleFrom(
-        //     backgroundColor: const Color(0xFFFFFDFD),
-        //     minimumSize: const Size(150, 45),
-        //   ),
-        //   child: Text("Iniciar Sesión",
-        //       style: TextStyle(
-        //           fontSize: MediaQuery.of(context).size.width * 0.04)),
-        // ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.005),
         ElevatedButton(
           onPressed: () {

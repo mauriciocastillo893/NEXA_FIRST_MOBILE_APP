@@ -16,7 +16,7 @@ class LastMovementsBox extends StatelessWidget {
       child: Container(
         height: MediaQuery.of(context).size.height * 0.06,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
+          borderRadius: BorderRadius.circular(12),
           color: const Color(0xFF2F2F2F),
           boxShadow: [
             BoxShadow(

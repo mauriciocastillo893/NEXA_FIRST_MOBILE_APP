@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/login_screen.dart';
 import 'package:moviles_app/presentation/screens/register_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -79,42 +80,26 @@ class _MainView extends StatelessWidget {
         mainAxisAlignment:
             MainAxisAlignment.center, // Alinea los botones al centro de la fila
         children: [
-          ElevatedButton(
+          ElevatedButtonBox(
+            text: "Registrarse",
+            darkMode: true,
+            borderRadiusOf: 12,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const RegisterScreen()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterScreen()));
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0A0A0A),
-              minimumSize: const Size(150, 45),
-              // shape: RoundedRectangleBorder(
-              //   borderRadius: BorderRadius.circular(25),
-              // ),
-            ),
-            child: const Text(
-              'Registrarse',
-              style: TextStyle(color: Color(0xFFFFFDFD)),
-            ),
           ),
           const SizedBox(width: 20),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginScreen()));
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFFDFD),
-                minimumSize: const Size(150, 45),
-                // shape: RoundedRectangleBorder(
-                //   borderRadius: BorderRadius.circular(25),
-                // ),
-              ),
-              child: const Text(
-                "Iniciar sesión",
-                style: TextStyle(color: Color(0xFF0A0A0A)),
-              ))
+          ElevatedButtonBox(
+            text: "Iniciar sesión",
+            borderRadiusOf: 12,
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()));
+            },
+          ),
         ],
       )
     ]);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/login_screen.dart';
 import 'package:moviles_app/presentation/screens/main_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -16,6 +17,10 @@ class RegisterScreen extends StatelessWidget {
 }
 
 class _RegisterView extends StatelessWidget {
+  final focusNode1 = FocusNode();
+  final focusNode2 = FocusNode();
+  final focusNode3 = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -23,7 +28,7 @@ class _RegisterView extends StatelessWidget {
         Stack(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
+              height: MediaQuery.of(context).size.height * 0.4,
               width: double.infinity,
               child: Image.asset(
                 'assets/images/LoginImage.png',
@@ -33,7 +38,7 @@ class _RegisterView extends StatelessWidget {
             Positioned(
               child: Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.5,
+                height: MediaQuery.of(context).size.height * 0.4,
                 decoration: const BoxDecoration(
                     gradient: LinearGradient(
                         begin: Alignment.center,
@@ -62,7 +67,7 @@ class _RegisterView extends StatelessWidget {
                 ))
           ],
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.018),
         Text("HACOP",
             style: TextStyle(
               color: Colors.white,
@@ -76,25 +81,40 @@ class _RegisterView extends StatelessWidget {
               fontWeight: FontWeight.w900,
               fontSize: MediaQuery.of(context).size.width * 0.08,
             )),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.018),
+        MessageFieldBox(
+          title: "Correo electrónico",
+          placeholder: "myuser@example.com",
+          typeOfIcon: const Icon(Icons.email),
+          borderRadiusOf: 12,
+          actualFocusNode: focusNode1,
+          nextFocusNode: focusNode2,
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.018),
+        MessageFieldBox(
+          title: "Nombre de Usuario",
+          placeholder: "hacopUser123",
+          typeOfIcon: const Icon(Icons.person),
+          borderRadiusOf: 12,
+          actualFocusNode: focusNode2,
+          nextFocusNode: focusNode3,
+        ),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.018),
+        MessageFieldBox(
+          title: "Contraseña",
+          placeholder: "",
+          typeOfIcon: const Icon(Icons.password),
+          borderRadiusOf: 12,
+          actualFocusNode: focusNode3,
+        ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        const MessageFieldBox(placeholder: "Correo Eléctronico"),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        const MessageFieldBox(placeholder: "Usuario"),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        const MessageFieldBox(placeholder: "Contraseña"),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-        ElevatedButton(
+        ElevatedButtonBox(
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const LoginScreen()));
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFFDFD),
-            minimumSize: const Size(150, 45),
-          ),
-          child: Text("Registrarse",
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.04)),
+          text: "Registarse",
+          borderRadiusOf: 12,
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.008),
         ElevatedButton(

@@ -77,7 +77,8 @@ class MessageFieldBox extends StatelessWidget {
       ]),
       Padding(
         padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? 40,
+          horizontal:
+              horizontalPadding ?? MediaQuery.of(context).size.width * 0.105,
           vertical: verticalPadding ?? 0,
         ),
         child: TextFormField(
