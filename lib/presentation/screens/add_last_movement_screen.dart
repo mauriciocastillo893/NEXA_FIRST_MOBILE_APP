@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/app_bar_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
 
 class AddLastMovementScreen extends StatelessWidget {
@@ -8,22 +9,8 @@ class AddLastMovementScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // title: const Text("Últimos Movimientos"),
-        backgroundColor: const Color(0xFF202020),
-        leading: IconButton(
-          icon: const Icon(Icons
-              .arrow_back_ios_new_rounded), // Cambia este icono por el que desees
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.person),
-          ),
-        ],
+      appBar: const AppBarBox(
+        title: "",
       ),
       body: _AddLastMovementView(),
     );

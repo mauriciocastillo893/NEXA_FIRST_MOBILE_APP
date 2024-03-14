@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/providers/last_movements_provider.dart';
 import 'package:moviles_app/presentation/screens/add_last_movement_screen.dart';
-import 'package:moviles_app/presentation/screens/lobby_user_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/app_bar_box.dart';
+import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/last_movements_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
+import 'package:moviles_app/presentation/widgets/shared/select_field_box.dart';
 import 'package:provider/provider.dart';
 
 class LastMovementsScreen extends StatelessWidget {
@@ -14,23 +16,8 @@ class LastMovementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          // title: const Text("Últimos Movimientos"),
-          backgroundColor: const Color(0xFF202020),
-          leading: IconButton(
-              icon: const Icon(Icons
-                  .arrow_back_ios_new_rounded), // Cambia este icono por el que desees
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return const LobbyUserScreen();
-                }));
-              }),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.person),
-            ),
-          ],
+        appBar: const AppBarBox(
+          title: "",
         ),
         body: ChangeNotifierProvider(
           create: (context) => LastMovementsProvider(),
@@ -56,18 +43,20 @@ class _LastMovementsView extends StatelessWidget {
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.03),
         const MessageFieldBox(
+          title: "Buscar movimiento por",
           placeholder: "Buscar",
           typeOfIcon: Icon(Icons.search_sharp),
-          horizontalPadding: 20,
+          // horizontalPadding: 20,
+          borderRadiusOf: 12,
         ),
+        const SelectFieldBox(),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         SizedBox(
-          // height: MediaQuery.of(context).size.height * 0.3,
           height: lastMovementProvider.lastMovements.isEmpty
               ? MediaQuery.of(context).size.height * 0.05
               : min(
                   MediaQuery.of(context).size.height *
-                      0.075 *
+                      0.09 *
                       lastMovementProvider.lastMovements.length,
                   MediaQuery.of(context).size.height * 0.3),
           child: lastMovementProvider.lastMovements.isEmpty
@@ -83,7 +72,13 @@ class _LastMovementsView extends StatelessWidget {
                   itemBuilder: (context, item) {
                     final message = lastMovementProvider.lastMovements[item];
                     List<Widget> elements = [
-                      LastMovementsBox(lastMovement: message),
+                      LastMovementsBox(
+                        lastMovement: message,
+                        rightInnerPadding:
+                            MediaQuery.of(context).size.width * 0.06,
+                        leftInnerPadding:
+                            MediaQuery.of(context).size.width * 0.06,
+                      ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015),
                     ];
@@ -92,20 +87,15 @@ class _LastMovementsView extends StatelessWidget {
                 ),
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.005),
-        ElevatedButton(
+        ElevatedButtonBox(
+          borderRadiusOf: 12,
+          text: "Agregar movimiento",
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
               return const AddLastMovementScreen();
             }));
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFFFFFDFD),
-            minimumSize: const Size(150, 45),
-          ),
-          child: Text("Agregar Movimiento",
-              style: TextStyle(
-                  fontSize: MediaQuery.of(context).size.width * 0.04)),
-        ),
+        )
       ],
     );
   }

@@ -6,15 +6,24 @@ class LastMovementsBox extends StatelessWidget {
   const LastMovementsBox({
     super.key,
     required this.lastMovement,
+    this.containerWidth,
+    this.containerHeight,
+    this.rightInnerPadding,
+    this.leftInnerPadding,
   });
   final LastMovement lastMovement;
+  final double? containerWidth;
+  final double? containerHeight;
+  final double? rightInnerPadding;
+  final double? leftInnerPadding;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.06,
+        height: containerHeight ?? MediaQuery.of(context).size.height * 0.07,
+        width: containerWidth ?? MediaQuery.of(context).size.width * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: const Color(0xFF2F2F2F),
@@ -31,7 +40,7 @@ class LastMovementsBox extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.1),
+                    left: leftInnerPadding ?? MediaQuery.of(context).size.width * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +68,7 @@ class LastMovementsBox extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width * 0.1),
+                    right: rightInnerPadding ?? MediaQuery.of(context).size.width * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,

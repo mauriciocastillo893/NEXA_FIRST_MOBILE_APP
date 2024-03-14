@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/providers/last_movements_provider.dart';
 import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
 import 'package:moviles_app/presentation/screens/my_money_screen.dart';
+import 'package:moviles_app/presentation/widgets/shared/app_bar_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/last_movements_box.dart';
 import 'package:provider/provider.dart';
 
@@ -18,22 +19,9 @@ class LobbyUserScreen extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => LastMovementsProvider())
         ],
         child: Scaffold(
-          appBar: AppBar(
-            title: Text("¡Hola, $user!"),
-            backgroundColor: const Color(0xFF202020),
-            leading: IconButton(
-              icon:
-                  const Icon(Icons.menu), // Cambia este icono por el que desees
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person),
-              ),
-            ],
+          appBar: AppBarBox(
+            title: " ¡Hola, $user!",
+            deactiveLeadingIcon: true,
           ),
           body: _LobbyUserView(),
         ));
@@ -61,6 +49,7 @@ class _LobbyUserView extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: const Color.fromARGB(255, 176, 255, 91),
+                        // color: const Color(0xFF8AFF10),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.8),
@@ -210,10 +199,10 @@ class _LobbyUserView extends StatelessWidget {
         SizedBox(
           // height: MediaQuery.of(context).size.height * 0.3,
           height: lastMovementProvider.lastMovements.isEmpty
-              ? MediaQuery.of(context).size.height * 0.05
+              ? MediaQuery.of(context).size.height * 0.07
               : min(
                   MediaQuery.of(context).size.height *
-                      0.075 *
+                      0.085 *
                       min(4, lastMovementProvider.lastMovements.length),
                   MediaQuery.of(context).size.height * 0.3),
           child: lastMovementProvider.lastMovements.isEmpty
@@ -229,7 +218,10 @@ class _LobbyUserView extends StatelessWidget {
                   itemBuilder: (context, item) {
                     final message = lastMovementProvider.lastMovements[item];
                     List<Widget> elements = [
-                      LastMovementsBox(lastMovement: message),
+                      LastMovementsBox(
+                        lastMovement: message,
+                        containerWidth: MediaQuery.of(context).size.width * 1,
+                      ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015),
                     ];
