@@ -16,6 +16,7 @@ void showAlertAssistance(
   Color? colorAcceptText,
   Color? colorCancelText,
   double? borderRadiusOfButton,
+  // Añadir tiempo
 }) {
   showDialog<String>(
     context: context,

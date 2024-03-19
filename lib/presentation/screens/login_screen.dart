@@ -2,28 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/lobby_user_screen.dart';
 import 'package:moviles_app/presentation/screens/main_screen.dart';
 import 'package:moviles_app/presentation/screens/register_screen.dart';
+import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
+import 'package:moviles_app/services/login_service.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _LoginView();
+  }
+}
+
+class _LoginView extends State<LoginScreen> {
+  final focusNode1 = FocusNode();
+  final focusNode2 = FocusNode();
+  late String email;
+  late String password;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text("Iniciar Sesión")),
-      body: _LoginView(),
-    );
-  }
-}
-
-class _LoginView extends StatelessWidget {
-    final focusNode1 = FocusNode();
-    final focusNode2 = FocusNode();
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
+        body: SingleChildScrollView(
       child: Column(children: [
         Stack(
           children: [
@@ -83,28 +85,52 @@ class _LoginView extends StatelessWidget {
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.0175),
         MessageFieldBox(
-          title: "Nombre de Usuario",
-          placeholder: "",
-          typeOfIcon: const Icon(Icons.person),
-          borderRadiusOf: 12,
-          actualFocusNode: focusNode1,
-          nextFocusNode: focusNode2,
-        ),
+            title: "Nombre de Usuario",
+            placeholder: "",
+            typeOfIcon: const Icon(Icons.person),
+            borderRadiusOf: 12,
+            actualFocusNode: focusNode1,
+            nextFocusNode: focusNode2,
+            onChanged: (value) {
+              setState(() {
+                email = value;
+              });
+            }),
         SizedBox(height: MediaQuery.of(context).size.height * 0.0175),
         MessageFieldBox(
-            title: "Contraseña",
-            placeholder: "",
-            typeOfIcon: const Icon(Icons.password),
-            borderRadiusOf: 12,
-            actualFocusNode: focusNode2,
-            // nextFocusNode: focusNode3,
-            ),
+          title: "Contraseña",
+          placeholder: "",
+          typeOfIcon: const Icon(Icons.password),
+          borderRadiusOf: 12,
+          actualFocusNode: focusNode2,
+          // nextFocusNode: focusNode3,
+          onChanged: (value) {
+            setState(() {
+              password = value;
+            });
+          },
+        ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.0275),
         ElevatedButtonBox(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const LobbyUserScreen();
-            }));
+            email.isEmpty || password.isEmpty
+                ? showAlertAssistance(
+                    context,
+                    title: "Inicio de Sesión Fallido",
+                    content: "¡Debes llenar todos los campos!",
+                  )
+                : loginController(email: email, password: password).then((_) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const LobbyUserScreen();
+                    }));
+                  }).catchError((onError) {
+                    showAlertAssistance(
+                      context,
+                      title: "Inicio de Sesión Fallido",
+                      content: "¡Usuario o contraseña incorrectos!",
+                    );
+                  });
           },
           text: "Iniciar Sesión",
           borderRadiusOf: 12,
@@ -129,6 +155,6 @@ class _LoginView extends StatelessWidget {
               )),
         )
       ]),
-    );
+    ));
   }
 }

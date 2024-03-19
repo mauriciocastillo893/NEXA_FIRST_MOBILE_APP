@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class MessageFieldBox extends StatelessWidget {
+class MessageFieldBox extends StatefulWidget {
   const MessageFieldBox({
-    Key? key,
+    super.key,
     this.title = "Título no disponible",
     this.placeholder = "Escribe un mensaje",
     this.typeOfIcon,
@@ -14,7 +14,8 @@ class MessageFieldBox extends StatelessWidget {
     this.isActiveDoneButton = false,
     this.actualFocusNode,
     this.nextFocusNode,
-  }) : super(key: key);
+    this.onChanged,
+  });
 
   final String title;
   final String placeholder;
@@ -27,31 +28,44 @@ class MessageFieldBox extends StatelessWidget {
   final bool isActiveDoneButton;
   final FocusNode? actualFocusNode;
   final FocusNode? nextFocusNode;
+  final ValueChanged<String>? onChanged;
+
+  @override
+  MessageFieldBoxState createState() => MessageFieldBoxState();
+}
+
+class MessageFieldBoxState extends State<MessageFieldBox> {
+  final textController = TextEditingController();
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final textController = TextEditingController();
-    //
-    final focusNode = actualFocusNode ?? FocusNode();
-    final toAimNextfocusNode = nextFocusNode ?? FocusNode();
+    final focusNode = widget.actualFocusNode ?? FocusNode();
+    final toAimNextfocusNode = widget.nextFocusNode ?? FocusNode();
 
     final inputDecoration = InputDecoration(
-      hintText: placeholder,
+      hintText: widget.placeholder,
       hintStyle: TextStyle(
-        color: darkMode == true ? Colors.white : const Color(0xFF141414),
+        color: widget.darkMode == true ? Colors.white : const Color(0xFF141414),
       ),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(borderRadiusOf ?? 30),
+        borderRadius: BorderRadius.circular(widget.borderRadiusOf ?? 30),
         borderSide: BorderSide.none,
       ),
       filled: true,
-      fillColor: darkMode == true ? const Color(0xFF141414) : Colors.white,
+      fillColor:
+          widget.darkMode == true ? const Color(0xFF141414) : Colors.white,
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       suffixIcon: IconButton(
-        icon: typeOfIcon ?? const Icon(Icons.error),
-        color: darkMode == true ? Colors.white : const Color(0xFF141414),
+        icon: widget.typeOfIcon ?? const Icon(Icons.error),
+        color: widget.darkMode == true ? Colors.white : const Color(0xFF141414),
         onPressed: () {
-          if (isActiveButtonPressingIcon) {
+          if (widget.isActiveButtonPressingIcon) {
             textController.clear();
             focusNode.requestFocus();
           }
@@ -65,7 +79,7 @@ class MessageFieldBox extends StatelessWidget {
           padding: EdgeInsets.only(
               left: MediaQuery.of(context).size.width * 0.11, bottom: 2),
           child: Text(
-            title,
+            widget.title,
             textAlign: TextAlign.left,
             style: TextStyle(
               color: Colors.white,
@@ -77,22 +91,24 @@ class MessageFieldBox extends StatelessWidget {
       ]),
       Padding(
         padding: EdgeInsets.symmetric(
-          horizontal:
-              horizontalPadding ?? MediaQuery.of(context).size.width * 0.105,
-          vertical: verticalPadding ?? 0,
+          horizontal: widget.horizontalPadding ??
+              MediaQuery.of(context).size.width * 0.105,
+          vertical: widget.verticalPadding ?? 0,
         ),
         child: TextFormField(
           onTapOutside: (event) {
             focusNode.unfocus();
           },
           style: TextStyle(
-            color: darkMode == true ? Colors.white : const Color(0xFF141414),
+            color: widget.darkMode == true
+                ? Colors.white
+                : const Color(0xFF141414),
           ),
           focusNode: focusNode,
           controller: textController,
           decoration: inputDecoration,
           onFieldSubmitted: (value) {
-            if (isActiveDoneButton) {
+            if (widget.isActiveDoneButton) {
               textController.clear();
               focusNode.requestFocus();
             } else {
@@ -100,6 +116,8 @@ class MessageFieldBox extends StatelessWidget {
               toAimNextfocusNode.requestFocus();
             }
           },
+          onChanged: widget
+              .onChanged,
         ),
       ),
     ]);
