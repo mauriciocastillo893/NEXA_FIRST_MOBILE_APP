@@ -3,27 +3,38 @@ import 'package:moviles_app/presentation/screens/login_screen.dart';
 import 'package:moviles_app/presentation/screens/main_screen.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
+import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
+import 'package:moviles_app/services/register_service.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _RegisterView();
+  }
+}
+
+class _RegisterView extends State<RegisterScreen> {
+  final focusNode1 = FocusNode();
+  final focusNode2 = FocusNode();
+  final focusNode3 = FocusNode();
+  String username = "";
+  String email = "";
+  String password = "";
+
+  @override
+  void dispose() {
+    focusNode1.dispose();
+    focusNode2.dispose();
+    focusNode3.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text("Iniciar Sesión")),
-      body: _RegisterView(),
-    );
-  }
-}
-
-class _RegisterView extends StatelessWidget {
-  final focusNode1 = FocusNode();
-  final focusNode2 = FocusNode();
-  final focusNode3 = FocusNode();
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
+        body: SingleChildScrollView(
       child: Column(children: [
         Stack(
           children: [
@@ -89,6 +100,11 @@ class _RegisterView extends StatelessWidget {
           borderRadiusOf: 12,
           actualFocusNode: focusNode1,
           nextFocusNode: focusNode2,
+          onChanged: (value) {
+            setState(() {
+              email = value;
+            });
+          },
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.018),
         MessageFieldBox(
@@ -98,6 +114,11 @@ class _RegisterView extends StatelessWidget {
           borderRadiusOf: 12,
           actualFocusNode: focusNode2,
           nextFocusNode: focusNode3,
+          onChanged: (value) {
+            setState(() {
+              username = value;
+            });
+          },
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.018),
         MessageFieldBox(
@@ -106,12 +127,42 @@ class _RegisterView extends StatelessWidget {
           typeOfIcon: const Icon(Icons.password),
           borderRadiusOf: 12,
           actualFocusNode: focusNode3,
+          onChanged: (value) {
+            setState(() {
+              password = value;
+            });
+          },
         ),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         ElevatedButtonBox(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()));
+            username.isEmpty || email.isEmpty || password.isEmpty
+                ? showAlertAssistance(
+                    context,
+                    title: "Campos vacíos",
+                    content: "Por favor, llena todos los campos",
+                    onPressedAccept: () => Navigator.pop(context),
+                    colorAcceptButton: const Color(0xFF8AFF10),
+                    colorAcceptText: const Color(0xFF202020),
+                    borderRadiusOfButton: 12,
+                  )
+                : signUpController(
+                        username: username, email: email, password: password)
+                    .then((_) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const MainScreen();
+                    }));
+                  }).catchError((onError) {
+                    showAlertAssistance(
+                      context,
+                      title: "Registro Fallido",
+                      content: "Vuelva a realizar el registro",
+                      onCancelButtonActive: false,
+                    );
+                  });
+            // Navigator.push(context,
+            //     MaterialPageRoute(builder: (context) => const LoginScreen()));
           },
           text: "Registarse",
           borderRadiusOf: 12,
@@ -134,6 +185,6 @@ class _RegisterView extends StatelessWidget {
               )),
         )
       ]),
-    );
+    ));
   }
 }

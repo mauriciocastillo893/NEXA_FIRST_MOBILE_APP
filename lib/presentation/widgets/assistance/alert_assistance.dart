@@ -16,6 +16,8 @@ void showAlertAssistance(
   Color? colorAcceptText,
   Color? colorCancelText,
   double? borderRadiusOfButton,
+  bool onAcceptButtonActive = true,
+  bool onCancelButtonActive = true,
   // Añadir tiempo
 }) {
   showDialog<String>(
@@ -32,24 +34,26 @@ void showAlertAssistance(
       ),
       content: Text(content),
       actions: <Widget>[
-        ElevatedButtonBox(
-          defaultSize: true,
-          onPressed: onPressedAccept ?? () => Navigator.pop(context),
-          colorButton: colorAcceptButton,
-          colorText: colorAcceptText,
-          darkMode: darkMode,
-          borderRadiusOf: borderRadiusOfButton ?? 30,
-          text: titleAcceptButton,
-        ),
-        ElevatedButtonBox(
-          defaultSize: true,
-          onPressed: onPressedCancel ?? () => Navigator.pop(context),
-          colorButton: colorCancelButton,
-          colorText: colorCancelText,
-          darkMode: darkMode,
-          borderRadiusOf: borderRadiusOfButton ?? 30,
-          text: titleCancelButton,
-        ),
+        if (onAcceptButtonActive)
+          ElevatedButtonBox(
+            defaultSize: true,
+            onPressed: onPressedAccept ?? () => Navigator.pop(context),
+            colorButton: colorAcceptButton,
+            colorText: colorAcceptText,
+            darkMode: darkMode,
+            borderRadiusOf: borderRadiusOfButton ?? 30,
+            text: titleAcceptButton,
+          ),
+        if (onCancelButtonActive)
+          ElevatedButtonBox(
+            defaultSize: true,
+            onPressed: onPressedCancel ?? () => Navigator.pop(context),
+            colorButton: colorCancelButton,
+            colorText: colorCancelText,
+            darkMode: darkMode,
+            borderRadiusOf: borderRadiusOfButton ?? 30,
+            text: titleCancelButton,
+          ),
       ],
     ),
   );

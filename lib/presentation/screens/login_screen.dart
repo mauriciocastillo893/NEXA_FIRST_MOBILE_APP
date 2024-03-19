@@ -19,8 +19,15 @@ class LoginScreen extends StatefulWidget {
 class _LoginView extends State<LoginScreen> {
   final focusNode1 = FocusNode();
   final focusNode2 = FocusNode();
-  late String email;
-  late String password;
+  String email = "";
+  String password = "";
+
+  @override
+  void dispose() {
+    focusNode1.dispose();
+    focusNode2.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,9 +92,9 @@ class _LoginView extends State<LoginScreen> {
             )),
         SizedBox(height: MediaQuery.of(context).size.height * 0.0175),
         MessageFieldBox(
-            title: "Nombre de Usuario",
+            title: "Email",
             placeholder: "",
-            typeOfIcon: const Icon(Icons.person),
+            typeOfIcon: const Icon(Icons.email),
             borderRadiusOf: 12,
             actualFocusNode: focusNode1,
             nextFocusNode: focusNode2,
@@ -129,6 +136,7 @@ class _LoginView extends State<LoginScreen> {
                       context,
                       title: "Inicio de Sesión Fallido",
                       content: "¡Usuario o contraseña incorrectos!",
+                      onCancelButtonActive: false,
                     );
                   });
           },
