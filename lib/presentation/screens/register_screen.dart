@@ -4,7 +4,7 @@ import 'package:moviles_app/presentation/screens/main_screen.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
 import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
-import 'package:moviles_app/services/register_service.dart';
+import 'package:moviles_app/services/user_services/register_service.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -137,27 +137,31 @@ class _RegisterView extends State<RegisterScreen> {
         ElevatedButtonBox(
           onPressed: () {
             username.isEmpty || email.isEmpty || password.isEmpty
-                ? showAlertAssistance(
-                    context,
+                ? showAlertAssistance(context,
                     title: "Campos vacíos",
                     content: "Por favor, llena todos los campos",
                     onPressedAccept: () => Navigator.pop(context),
                     colorAcceptButton: const Color(0xFF8AFF10),
-                    colorAcceptText: const Color(0xFF202020),
-                    borderRadiusOfButton: 12,
-                  )
+                    onCancelButtonActive: false)
                 : signUpController(
                         username: username, email: email, password: password)
                     .then((_) {
+                    // showAlertAssistance(context,
+                    //     title: "Registro completado",
+                    //     content: "Por favor, inicia sesión para continuar.",
+                    //     onPressedAccept: () => Navigator.pop(context),
+                    //     colorAcceptButton: const Color(0xFF8AFF10),
+                    //     onCancelButtonActive: false);
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return const MainScreen();
+                      return const LoginScreen();
                     }));
                   }).catchError((onError) {
                     showAlertAssistance(
                       context,
                       title: "Registro Fallido",
-                      content: "Vuelva a realizar el registro",
+                      content:
+                          "El email ya existe, por favor intente con otro correo.",
                       onCancelButtonActive: false,
                     );
                   });

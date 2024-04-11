@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
 import 'package:moviles_app/presentation/screens/my_money_screen.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
 

@@ -15,15 +15,18 @@ Future<void> signUpController(
       },
     );
 
-    final responseData = response.data as Map<String, dynamic>;
-    final responseName = responseData['name'];
-    final responseEmail = responseData['email'];
-    final responsePassword = responseData['password'];
+    if (response.statusCode == 200) {
+      final responseData = response.data as Map<String, dynamic>;
+      final responseName = responseData['name'];
+      final responseEmail = responseData['email'];
+      final responsePassword = responseData['password'];
 
-    print("Response [Name]: $responseName");
-    print("Response [Email]: $responseEmail");
-    print("Response [Password]: $responsePassword");
-
+      print("Response [Name]: $responseName");
+      print("Response [Email]: $responseEmail");
+      print("Response [Password]: $responsePassword");
+    } else {
+      throw Exception('Failed to sign up');
+    }
     return Future.value();
   } catch (e) {
     print("Error detected in: $e");

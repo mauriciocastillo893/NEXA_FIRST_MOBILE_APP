@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/edit_font_screen.dart';
 import 'package:moviles_app/presentation/screens/new_font_screen.dart';
+import 'package:moviles_app/services/user_services/get_data_user_by_id.dart';
 
 class MyMoneyScreen extends StatelessWidget {
   const MyMoneyScreen({super.key});
@@ -20,7 +21,9 @@ class MyMoneyScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              getDataByUserIdController(userIdParameter: "1234");
+            },
             icon: const Icon(Icons.person),
           ),
         ],
@@ -34,7 +37,7 @@ class _MyMoneyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      // Eliminar este Expanded
+        // Eliminar este Expanded
         child: Expanded(
       child: Column(
         children: [
@@ -67,7 +70,7 @@ class _MyMoneyView extends StatelessWidget {
                         color: const Color(0xFFFFFDFD),
                         fontSize: MediaQuery.of(context).size.width * 0.04)),
               ),
-                            ElevatedButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return const EditFontScreen();
