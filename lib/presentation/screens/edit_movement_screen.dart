@@ -4,32 +4,37 @@ import 'package:moviles_app/presentation/providers/last_movements_provider.dart'
 import 'package:moviles_app/presentation/screens/last_movements_screen.dart';
 import 'package:moviles_app/presentation/widgets/shared/app_bar_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
+import 'package:moviles_app/services/transaction_services/update_user_transaction_by_t_id.dart';
 import 'package:provider/provider.dart';
 
-class AddLastMovementScreen extends StatelessWidget {
-  const AddLastMovementScreen({super.key});
+class EditMovementScreen extends StatelessWidget {
+  const EditMovementScreen({super.key, required this.idTransaction});
+
+  final String idTransaction;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ChangeNotifierProvider(
         create: (context) => LastMovementsProvider(),
-        child: const AddLastMovementScreen2(),
+        child: EditMovementScreen2(idTransaction: idTransaction),
       ),
     );
   }
 }
 
-class AddLastMovementScreen2 extends StatefulWidget {
-  const AddLastMovementScreen2({super.key});
+class EditMovementScreen2 extends StatefulWidget {
+  const EditMovementScreen2({super.key, required this.idTransaction});
+
+  final String idTransaction;
 
   @override
   State<StatefulWidget> createState() {
-    return _AddLastMovementView();
+    return _EditMovementView();
   }
 }
 
-class _AddLastMovementView extends State<AddLastMovementScreen2> {
+class _EditMovementView extends State<EditMovementScreen2> {
   String fromWho = "Usuario";
   String bank = "BBVA";
   double amount = 0.0;
@@ -39,6 +44,7 @@ class _AddLastMovementView extends State<AddLastMovementScreen2> {
   late String formattedDate;
   late String formattedTime;
   late String transactionMade;
+  late final String idTransaction;
 
   @override
   void initState() {
@@ -47,6 +53,7 @@ class _AddLastMovementView extends State<AddLastMovementScreen2> {
     formattedDate = "${now.day}/${now.month}/${now.year}";
     formattedTime = "${now.hour}:${now.minute}";
     transactionMade = "Hoy a las $formattedTime el $formattedDate";
+    idTransaction = widget.idTransaction;
   }
 
   @override
@@ -81,42 +88,18 @@ class _AddLastMovementView extends State<AddLastMovementScreen2> {
                   onChanged: (value) => value == "Gasto"
                       ? operationType = OperationType.withdrawal
                       : operationType = OperationType.deposit),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              MessageFieldBox(
-                  placeholder: "BBVA (default)",
-                  title: "Banco",
-                  typeOfIcon: const Icon(Icons.account_balance_outlined),
-                  onChanged: (value) => bank = value),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              MessageFieldBox(
-                title: "Monto",
-                placeholder: "\$0.0",
-                typeOfIcon: const Icon(Icons.monetization_on_outlined),
-                onChanged: (value) {
-                  try {
-                    amount = double.parse(value);
-                  } catch (e) {
-                    // Manejar la excepción aquí
-                    print("Error al convertir el valor a double: $e");
-                  }
-                },
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-              // const MessageFieldBox(
-              //   title: "Ingresa a la sección",
-              //   placeholder: "Ninguna",
-              //   typeOfIcon: Icon(Icons.select_all_sharp),
-              // ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    lastMovementProvider.createLastMovement(LastMovement(
-                        fromWho: fromWho,
-                        transactionMade: transactionMade,
-                        bank: bank,
-                        amount: amount,
-                        operationType: operationType));
+                    updateUserTransactionByTransactionIdController(
+                      transactionId: idTransaction,
+                      description: operationType == OperationType.deposit
+                          ? "Ingreso"
+                          : "Gasto",
+                    );
+                    lastMovementProvider.getDataTransactionByUserId();
+
                     return const LastMovementsScreen();
                   }));
                 },

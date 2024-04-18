@@ -10,7 +10,7 @@ class SelectFieldBox extends StatefulWidget {
 }
 
 class _SelectFieldBoxState extends State<SelectFieldBox> {
-  final List<String> _options = ['Option 1', 'Option 2', 'Option 3'];
+  final List<String> _options = ["Nombre destino", "Monto", "Fecha", "Banco"];
 
   late String dropdownValue = _options.first;
 
@@ -18,7 +18,7 @@ class _SelectFieldBoxState extends State<SelectFieldBox> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
+      icon: const Icon(Icons.arrow_drop_down_outlined),
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(

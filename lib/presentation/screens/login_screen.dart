@@ -5,7 +5,7 @@ import 'package:moviles_app/presentation/screens/register_screen.dart';
 import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
-import 'package:moviles_app/services/user_services/login_service.dart';
+import 'package:moviles_app/services/user_services/login_service_user.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -120,19 +120,22 @@ class _LoginView extends State<LoginScreen> {
         SizedBox(height: MediaQuery.of(context).size.height * 0.0275),
         ElevatedButtonBox(
           onPressed: () {
+            // Navigator.push(context, MaterialPageRoute(builder: (context) {
+            //   return const LobbyUserScreen();
+            // }));
+
             email.isEmpty || password.isEmpty
                 ? showAlertAssistance(context,
                     title: "Inicio de Sesión Fallido",
                     content: "¡Debes llenar todos los campos!",
                     colorAcceptButton: const Color(0xFF8AFF10),
                     onCancelButtonActive: false)
-                : loginController(email: email, password: password).then((_) {
+                : loginUserController(email: email, password: password)
+                    .then((_) {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const LobbyUserScreen();
-                    })
-                    
-                    );
+                    }));
                   }).catchError((onError) {
                     showAlertAssistance(
                       context,

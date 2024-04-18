@@ -3,11 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/providers/last_movements_provider.dart';
 import 'package:moviles_app/presentation/screens/add_last_movement_screen.dart';
+import 'package:moviles_app/presentation/screens/edit_movement_screen.dart';
+import 'package:moviles_app/presentation/screens/lobby_user_screen.dart';
+import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
 import 'package:moviles_app/presentation/widgets/shared/app_bar_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/last_movements_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
-import 'package:moviles_app/presentation/widgets/shared/select_field_box.dart';
+import 'package:moviles_app/services/transaction_services/delete_user_transaction_by_t_id.dart';
 import 'package:provider/provider.dart';
 
 class LastMovementsScreen extends StatelessWidget {
@@ -16,11 +19,17 @@ class LastMovementsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const AppBarBox(
+        appBar: AppBarBox(
           title: "",
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return const LobbyUserScreen();
+            }));
+          },
         ),
         body: ChangeNotifierProvider(
-          create: (context) => LastMovementsProvider(),
+          create: (context) =>
+              LastMovementsProvider()..getDataTransactionByUserId(),
           child: _LastMovementsView(),
         ));
   }
@@ -49,16 +58,16 @@ class _LastMovementsView extends StatelessWidget {
           // horizontalPadding: 20,
           borderRadiusOf: 12,
         ),
-        const SelectFieldBox(),
+        // const SelectFieldBox(),
         SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         SizedBox(
           height: lastMovementProvider.lastMovements.isEmpty
               ? MediaQuery.of(context).size.height * 0.05
               : min(
                   MediaQuery.of(context).size.height *
-                      0.09 *
+                      0.9 *
                       lastMovementProvider.lastMovements.length,
-                  MediaQuery.of(context).size.height * 0.3),
+                  MediaQuery.of(context).size.height * 0.5),
           child: lastMovementProvider.lastMovements.isEmpty
               ? const Center(
                   child: Text(
@@ -67,17 +76,40 @@ class _LastMovementsView extends StatelessWidget {
                   ),
                 )
               : ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
+                  // physics: const NeverScrollableScrollPhysics(),
                   itemCount: lastMovementProvider.lastMovements.length,
+
                   itemBuilder: (context, item) {
                     final message = lastMovementProvider.lastMovements[item];
                     List<Widget> elements = [
                       LastMovementsBox(
                         lastMovement: message,
-                        rightInnerPadding:
-                            MediaQuery.of(context).size.width * 0.06,
-                        leftInnerPadding:
-                            MediaQuery.of(context).size.width * 0.06,
+                        // rightInnerPadding:
+                        //     MediaQuery.of(context).size.width * 0,
+                        // leftInnerPadding:
+                        //     MediaQuery.of(context).size.width * 0.06,
+                        editIcon: true,
+                        onPressedEdit: () => {
+                          // print("Edit ${message.idTransaction}")
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return EditMovementScreen(
+                              idTransaction: message.idTransaction ?? "",
+                            );
+                          }))
+                        },
+                        deleteIcon: true,
+                        onPressedDelete: () async {
+                          // print("Delete ${message.idTransaction}");
+                          await deleteUserTransactionByTransactionIdController(
+                              transactionId: message.idTransaction ?? "");
+                          lastMovementProvider.getDataTransactionByUserId();
+                          showAlertAssistance(context,
+                              title: "Transacción eliminada",
+                              content:
+                                  "La transacción ha sido eliminada correctamente",
+                              titleAcceptButton: "Aceptar");
+                        },
                       ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.015),
@@ -86,7 +118,7 @@ class _LastMovementsView extends StatelessWidget {
                   },
                 ),
         ),
-        SizedBox(height: MediaQuery.of(context).size.height * 0.005),
+        SizedBox(height: MediaQuery.of(context).size.height * 0.02),
         ElevatedButtonBox(
           borderRadiusOf: 12,
           text: "Agregar movimiento",

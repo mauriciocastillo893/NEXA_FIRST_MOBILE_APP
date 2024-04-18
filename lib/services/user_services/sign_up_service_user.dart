@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-Future<void> signUpController(
+Future<void> signUpUserController(
     {required String username,
     required String email,
     required String password}) async {
@@ -15,7 +15,7 @@ Future<void> signUpController(
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       final responseData = response.data as Map<String, dynamic>;
       final responseName = responseData['name'];
       final responseEmail = responseData['email'];

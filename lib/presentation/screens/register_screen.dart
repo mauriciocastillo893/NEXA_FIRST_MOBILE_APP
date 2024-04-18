@@ -4,7 +4,7 @@ import 'package:moviles_app/presentation/screens/main_screen.dart';
 import 'package:moviles_app/presentation/widgets/shared/elevated_button_box.dart';
 import 'package:moviles_app/presentation/widgets/shared/message_field_box.dart';
 import 'package:moviles_app/presentation/widgets/assistance/alert_assistance.dart';
-import 'package:moviles_app/services/user_services/register_service.dart';
+import 'package:moviles_app/services/user_services/sign_up_service_user.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -143,7 +143,7 @@ class _RegisterView extends State<RegisterScreen> {
                     onPressedAccept: () => Navigator.pop(context),
                     colorAcceptButton: const Color(0xFF8AFF10),
                     onCancelButtonActive: false)
-                : signUpController(
+                : signUpUserController(
                         username: username, email: email, password: password)
                     .then((_) {
                     // showAlertAssistance(context,

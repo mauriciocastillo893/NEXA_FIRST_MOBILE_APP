@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:moviles_app/presentation/screens/edit_font_screen.dart';
 import 'package:moviles_app/presentation/screens/new_font_screen.dart';
-import 'package:moviles_app/services/user_services/get_data_user_by_id.dart';
+import 'package:moviles_app/services/user_services/get_data_user_by_user_id.dart';
 
 class MyMoneyScreen extends StatelessWidget {
   const MyMoneyScreen({super.key});
@@ -22,7 +22,7 @@ class MyMoneyScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              getDataByUserIdController(userIdParameter: "1234");
+              getDataUserByUserIdController();
             },
             icon: const Icon(Icons.person),
           ),

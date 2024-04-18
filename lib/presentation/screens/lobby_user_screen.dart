@@ -16,7 +16,9 @@ class LobbyUserScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
-          ChangeNotifierProvider(create: (_) => LastMovementsProvider())
+          ChangeNotifierProvider(
+              create: (_) =>
+                  LastMovementsProvider()..getDataTransactionByUserId())
         ],
         child: Scaffold(
           appBar: AppBarBox(
@@ -204,7 +206,7 @@ class _LobbyUserView extends StatelessWidget {
                   MediaQuery.of(context).size.height *
                       0.085 *
                       min(4, lastMovementProvider.lastMovements.length),
-                  MediaQuery.of(context).size.height * 0.3),
+                  MediaQuery.of(context).size.height * 0.25),
           child: lastMovementProvider.lastMovements.isEmpty
               ? const Center(
                   child: Text(
@@ -213,7 +215,7 @@ class _LobbyUserView extends StatelessWidget {
                   ),
                 )
               : ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
+                  // physics: const NeverScrollableScrollPhysics(),
                   itemCount: min(4, lastMovementProvider.lastMovements.length),
                   itemBuilder: (context, item) {
                     final message = lastMovementProvider.lastMovements[item];

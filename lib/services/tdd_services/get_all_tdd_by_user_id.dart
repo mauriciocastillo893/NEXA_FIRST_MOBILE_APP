@@ -1,10 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> updateDataUserByIdController(
-    {required String username,
-    required String password}) async {
-  
+Future<void> getAllTddByUserIdController() async {
   final dio = Dio();
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
@@ -12,12 +9,8 @@ Future<void> updateDataUserByIdController(
   final userId = sharedPreferences.getString('userId');
 
   try {
-    final response = await dio.patch(
-      'https://hacorp-api.vercel.app/api/user/$userId',
-      data: {
-        'name': username,
-        'password': password,
-      },
+    final response = await dio.get(
+      'https://hacorp-api.vercel.app/api/tdd/$userId',
       options: Options(
         headers: {
           'Authorization': 'Bearer $token',
@@ -27,7 +20,7 @@ Future<void> updateDataUserByIdController(
 
     if (response.statusCode == 200) {
       final responseData = response.data as Map<String, dynamic>;
-      print("Response Data got in updateDataUserByIdController: $responseData");
+      print("Response Data got in getAllTddByUserIdController: $responseData");
     } else {
       throw Exception('Failed to load user data');
     }

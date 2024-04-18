@@ -10,6 +10,7 @@ class LastMovement {
   final String bank;
   final double amount;
   final OperationType operationType;
+  final String? idTransaction;
   // final DateTime date;
 
   LastMovement({
@@ -18,6 +19,7 @@ class LastMovement {
     required this.bank,
     required this.amount,
     required this.operationType,
+    this.idTransaction
     // required this.date,
   });
 }

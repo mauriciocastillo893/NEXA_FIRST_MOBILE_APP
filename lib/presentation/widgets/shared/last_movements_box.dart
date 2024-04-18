@@ -3,19 +3,26 @@ import 'package:moviles_app/domain/entities/last_movement.dart';
 
 // DARK MODE NEEDS TO BE HEREz
 class LastMovementsBox extends StatelessWidget {
-  const LastMovementsBox({
-    super.key,
-    required this.lastMovement,
-    this.containerWidth,
-    this.containerHeight,
-    this.rightInnerPadding,
-    this.leftInnerPadding,
-  });
+  const LastMovementsBox(
+      {super.key,
+      required this.lastMovement,
+      this.containerWidth,
+      this.containerHeight,
+      this.rightInnerPadding,
+      this.leftInnerPadding,
+      this.editIcon,
+      this.deleteIcon,
+      this.onPressedEdit,
+      this.onPressedDelete});
   final LastMovement lastMovement;
   final double? containerWidth;
   final double? containerHeight;
   final double? rightInnerPadding;
   final double? leftInnerPadding;
+  final bool? editIcon;
+  final bool? deleteIcon;
+  final VoidCallback? onPressedEdit;
+  final VoidCallback? onPressedDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +44,13 @@ class LastMovementsBox extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Expanded(
+            Container(
+              width: ((deleteIcon ?? false) || (editIcon ?? false)) ? 115 : 160,
+              // color: Colors.blue,
               child: Padding(
                 padding: EdgeInsets.only(
-                    left: leftInnerPadding ?? MediaQuery.of(context).size.width * 0.1),
+                    left: leftInnerPadding ??
+                        MediaQuery.of(context).size.width * 0.1),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -65,10 +75,17 @@ class LastMovementsBox extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
+            Container(
+              width: ((deleteIcon ?? false) || (editIcon ?? false)) ? 100 : 160,
+              // color:
+              //     Colors.red, // Puedes ajustar este valor según sea necesario
               child: Padding(
                 padding: EdgeInsets.only(
-                    right: rightInnerPadding ?? MediaQuery.of(context).size.width * 0.1),
+                  left: ((editIcon ?? false) || (deleteIcon ?? false))
+                      ? 0
+                      : rightInnerPadding ??
+                          MediaQuery.of(context).size.width * 0.1,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +99,7 @@ class LastMovementsBox extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      lastMovement.operationType == OperationType.deposit
+                      ((lastMovement.operationType) == OperationType.deposit)
                           ? '+ \$${lastMovement.amount.toString()}'
                           : '- \$${lastMovement.amount.toString()}',
                       style: TextStyle(
@@ -95,6 +112,54 @@ class LastMovementsBox extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+            ),
+            Container(
+              width: ((deleteIcon ?? false) || (editIcon ?? false)) ? 38 : 0,
+              alignment: Alignment.center,
+              // color: editIcon ?? deleteIcon ? Colors.yellow : Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.only(left: 5),
+                child: RawMaterialButton(
+                  onPressed: onPressedEdit ?? () {},
+                  shape: CircleBorder(), // Forma del botón como un círculo
+                  fillColor: Colors.transparent, // Relleno transparente
+                  splashColor: Colors.white
+                      .withOpacity(0.3), // Color del efecto splash al presionar
+                  highlightColor: Colors
+                      .transparent, // Color del efecto highlight al presionar
+                  elevation: 0, // Sin elevación
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: (editIcon ?? false)
+                        ? Icon(Icons.edit, color: Colors.white)
+                        : null,
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              width: ((deleteIcon ?? false) || (editIcon ?? false)) ? 38 : 0,
+              alignment: Alignment.center,
+              // color: editIcon ?? deleteIcon ? Colors.yellow : Colors.transparent,
+              child: Padding(
+                padding: EdgeInsets.only(left: 0),
+                child: RawMaterialButton(
+                  onPressed: onPressedDelete ?? () {},
+                  shape: CircleBorder(), // Forma del botón como un círculo
+                  fillColor: Colors.transparent, // Relleno transparente
+                  splashColor: Colors.white
+                      .withOpacity(0.3), // Color del efecto splash al presionar
+                  highlightColor: Colors
+                      .transparent, // Color del efecto highlight al presionar
+                  elevation: 0, // Sin elevación
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: (editIcon ?? false)
+                        ? Icon(Icons.delete, color: Colors.white)
+                        : null,
+                  ),
                 ),
               ),
             ),
